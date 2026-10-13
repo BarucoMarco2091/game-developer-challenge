@@ -245,7 +245,7 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
           enemy.healthBar.clear();
           enemy.healthBar.rect(enemy.graphic.x - 10, enemy.graphic.y - 15, 20, 3).fill({ color: 0x333333 });
           const enemyHealthWidth = (enemy.health / enemy.maxHealth) * 20;
-          enemyHealthBar.rect(enemy.graphic.x - 10, enemy.graphic.y - 15, enemyHealthWidth, 3).fill({ color: 0x9b59b6 });
+          enemy.healthBar.rect(enemy.graphic.x - 10, enemy.graphic.y - 15, enemyHealthWidth, 3).fill({ color: 0x9b59b6 });
 
           // 4. Detecção de Impacto com o Jogador (Ataque Kamikaze do Chaser)
           const distanceToPlayer = Math.sqrt(dx * dx + dy * dy);
@@ -284,4 +284,6 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     </div>
   );
 };
+
+
 
