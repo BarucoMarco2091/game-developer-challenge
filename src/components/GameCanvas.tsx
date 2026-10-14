@@ -17,10 +17,13 @@ interface Enemy {
 export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isDestroyedRef = useRef(false);
+  const keysRef = useRef<Record<string, boolean>>({});
 
   useEffect(() => {
     isDestroyedRef.current = false;
     if (!containerRef.current) return;
+
+    
 
     // 1. Configurações Centrais de Gameplay
     const config = {
@@ -46,7 +49,7 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     const maxPlayerHealth = 100;
 
     // 2. Estado de Input do Teclado
-    const keys: Record<string, boolean> = {};
+    const keys = keysRef.current;
     const handleKeyDown = (e: KeyboardEvent) => { keys[e.key.toLowerCase()] = true; };
     const handleKeyUp = (e: KeyboardEvent) => { keys[e.key.toLowerCase()] = false; };
 
@@ -64,6 +67,7 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     let isInitialized = false;
 
     app.init({
+      
       width: 800,
       height: 600,
       backgroundColor: 0x1a365d,
@@ -346,16 +350,81 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     };
   }, []);
 
-  return (
-    <div className="flex flex-col items-center justify-center bg-slate-900 p-4 rounded-lg">
-      <div ref={containerRef} className="border-4 border-slate-700 rounded shadow-2xl overflow-hidden" />
-      <div className="text-white mt-4 text-xs bg-slate-800 p-3 rounded w-full max-w-lg text-center space-y-1">
-        <p className="font-bold text-amber-400">🎮 CONTROLES ATUALIZADOS:</p>
-        <p><strong>W / Seta Cima</strong>: Avançar | <strong>A / D</strong>: Rotacionar</p>
-        <p><strong>Espaço</strong>: Tiro Frontal | <strong className="text-blue-400">Q / E</strong>: Tiros Laterais (Esquerda / Direita)</p>
+    return (
+    <div className="flex flex-col items-center justify-center bg-slate-950 p-2 md:p-4 rounded-2xl w-full max-w-full overflow-hidden">
+      
+      {/* 
+        CONTAINER CORRIGIDO: 
+        1. Adicionado 'relative' e 'isolate' para impedir vazamento de contexto visual.
+        2. Adicionado '[&>*:not(canvas)]:hidden' que força o navegador a OCULTAR 
+           e APAGAR qualquer div, span ou elemento invisível injetado que não seja o próprio Canvas do jogo.
+      */}
+      <div 
+        ref={containerRef} 
+        className="relative isolate border-4 border-slate-800 rounded-xl shadow-2xl overflow-hidden max-w-full [&>canvas]:max-w-full [&>canvas]:h-auto [&>*:not(canvas)]:hidden" 
+      />
+      
+      {/* CONTROLES DE TOQUE (TOUCH SCREEN) - Mobile */}
+      <div className="md:hidden grid grid-cols-2 gap-4 w-full mt-4 max-w-md px-2">
+        <div className="grid grid-cols-3 gap-2 bg-slate-900/50 p-2 rounded-xl border border-slate-800">
+          <button 
+            onTouchStart={() => { keysRef.current['a'] = true; }} 
+            onTouchEnd={() => { keysRef.current['a'] = false; }}
+            className="bg-slate-800 active:bg-amber-500 active:text-slate-950 text-white font-bold p-3 rounded-lg text-center select-none text-xl"
+          >
+            ↩️
+          </button>
+          <button 
+            onTouchStart={() => { keysRef.current['w'] = true; }} 
+            onTouchEnd={() => { keysRef.current['w'] = false; }}
+            className="bg-slate-800 active:bg-amber-500 active:text-slate-950 text-white font-bold p-3 rounded-lg text-center select-none text-xl"
+          >
+            🔼
+          </button>
+          <button 
+            onTouchStart={() => { keysRef.current['d'] = true; }} 
+            onTouchEnd={() => { keysRef.current['d'] = false; }}
+            className="bg-slate-800 active:bg-amber-500 active:text-slate-950 text-white font-bold p-3 rounded-lg text-center select-none text-xl"
+          >
+            ↪️
+          </button>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 bg-slate-900/50 p-2 rounded-xl border border-slate-800">
+          <button 
+            onTouchStart={() => { keysRef.current['q'] = true; }} 
+            onTouchEnd={() => { keysRef.current['q'] = false; }}
+            className="bg-slate-800 active:bg-orange-500 active:text-white font-bold p-2 rounded-lg text-center select-none text-xs flex flex-col items-center justify-center"
+          >
+            <span>⬅️</span><span className="font-mono text-[9px] mt-0.5">PORT</span>
+          </button>
+          <button 
+            onTouchStart={() => { keysRef.current[' '] = true; }} 
+            onTouchEnd={() => { keysRef.current[' '] = false; }}
+            className="bg-amber-500 text-slate-950 font-black p-2 rounded-lg text-center select-none text-sm flex flex-col items-center justify-center shadow-md shadow-amber-500/10"
+          >
+            <span>🔥</span><span className="font-mono text-[9px] uppercase font-bold">Fire</span>
+          </button>
+          <button 
+            onTouchStart={() => { keysRef.current['e'] = true; }} 
+            onTouchEnd={() => { keysRef.current['e'] = false; }}
+            className="bg-slate-800 active:bg-orange-500 active:text-white font-bold p-2 rounded-lg text-center select-none text-xs flex flex-col items-center justify-center"
+          >
+            <span>➡️</span><span className="font-mono text-[9px] mt-0.5">STBD</span>
+          </button>
+        </div>
+      </div>
+
+      {/* GUIA DE CONTROLES DO TECLADO - Desktop */}
+      <div className="hidden md:block text-slate-400 mt-4 text-xs bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 w-full max-w-md text-center font-mono">
+        <p className="font-bold text-amber-400 mb-1 uppercase tracking-wider text-[11px]">🎮 Keyboard Mapping:</p>
+        <p><strong className="text-slate-200">W</strong>: Move Forward | <strong className="text-slate-200">A / D</strong>: Steer Ship</p>
+        <p><strong className="text-slate-200">Spacebar</strong>: Front Volley | <strong className="text-slate-200">Q / E</strong>: Port / Starboard Broadside (Triple)</p>
       </div>
     </div>
   );
+
+
 };
 
 
