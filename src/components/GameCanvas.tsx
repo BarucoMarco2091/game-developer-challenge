@@ -23,7 +23,7 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     isDestroyedRef.current = false;
     if (!containerRef.current) return;
 
-    
+     containerRef.current.innerHTML = ''
 
     // 1. Configurações Centrais de Gameplay
     const config = {
@@ -56,6 +56,9 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
+    const canvasElement = document.createElement('canvas');
+    containerRef.current.appendChild(canvasElement);
+
     // 3. Inicialização Assíncrona do PixiJS v8
     const app = new Application();
     let lastShootTime = 0;
@@ -67,7 +70,7 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
     let isInitialized = false;
 
     app.init({
-      
+      canvas: canvasElement,
       width: 800,
       height: 600,
       backgroundColor: 0x1a365d,
@@ -80,11 +83,12 @@ export const GameCanvas = ({ onGameOver }: GameCanvasProps) => {
         if (typeof (app as any)._cancelResize === 'function') {
           app.destroy(true, { children: true, texture: true });
         }
+        canvasElement.remove();
         return;
       }
 
       isInitialized = true;
-      containerRef.current?.appendChild(app.canvas);
+     
 
       // Listas de controle de entidades no Stage
       const playerBullets: Graphics[] = [];
