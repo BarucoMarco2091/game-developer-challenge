@@ -28,7 +28,7 @@ export default function App() {
       
       {/* HEADER GLOBAL */}
       <header className="w-full max-w-4xl text-center py-4">
-        <h1 className="text-3xl md:text-5xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 uppercase drop-shadow-[0_4px_12px_rgba(245,158,11,0.4)] animate-pulse">
+        <h1 className="text-3xl md:text-5xl font-black tracking-wider text-transparent bg-clip-text bg-linear-to-r from-amber-400 via-orange-500 to-amber-500 uppercase drop-shadow-[0_4px_12px_rgba(245,158,11,0.4)] animate-pulse">
           ⚓ Pirate Battle
         </h1>
         <p className="text-slate-500 text-xs md:text-sm mt-1 font-mono tracking-widest uppercase">
@@ -49,7 +49,7 @@ export default function App() {
 
             <button 
               onClick={() => setCurrentScreen('GAME')}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-4 px-6 rounded-xl transition-all duration-200 text-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] border border-amber-400/20"
+              className="w-full bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-4 px-6 rounded-xl transition-all duration-200 text-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] border border-amber-400/20"
             >
               ▶ Play Game
             </button>
@@ -94,7 +94,7 @@ export default function App() {
             
             <div className="bg-slate-950/80 rounded-xl p-6 border border-slate-800">
               <span className="text-xs text-slate-500 block uppercase tracking-widest font-mono font-bold">Final Score</span>
-              <strong className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-300 to-amber-500 block mt-1">{lastScore}</strong>
+              <strong className="text-6xl font-black text-transparent bg-clip-text bg-linear-to-b from-amber-300 to-amber-500 block mt-1">{lastScore}</strong>
               <span className="text-xs text-slate-400 block mt-3 font-mono">
                 {isSaving ? '⏳ Archiving to ledger...' : '✅ Securely recorded'}
               </span>
@@ -103,7 +103,7 @@ export default function App() {
             <div className="flex flex-col gap-3">
               <button 
                 onClick={() => setCurrentScreen('GAME')}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition shadow-md"
+                className="w-full bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition shadow-md"
               >
                 🔄 Play Again
               </button>
@@ -154,7 +154,7 @@ export default function App() {
               <h2 className="text-lg md:text-xl font-bold text-slate-300 flex items-center gap-2">📜 Captain's Log</h2>
               <button onClick={() => setCurrentScreen('MENU')} className="text-xs text-slate-400 hover:text-white bg-slate-800 py-1.5 px-4 rounded-lg transition border border-slate-700">Back</button>
             </div>
-            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/50 max-h-[320px] overflow-y-auto">
+            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/50 max-h-80 overflow-y-auto">
               {matchHistory.length === 0 ? (
                 <p className="text-center p-8 text-sm text-slate-500 font-mono">No log entries found. Sail out first!</p>
               ) : (
